@@ -10,6 +10,7 @@ export type NewsMeta = {
   title: string;
   date: string;
   summary: string;
+  pinned: boolean;
 };
 
 export type NewsArticle = NewsMeta & { html: string };
@@ -25,9 +26,13 @@ export function getAllNews(): NewsMeta[] {
       title: (data.title as string) ?? slug,
       date: (data.date as string) ?? "",
       summary: (data.summary as string) ?? "",
+      pinned: Boolean(data.pinned),
     };
   });
-  return items.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return items.sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return a.date < b.date ? 1 : -1;
+  });
 }
 
 export function getNewsBySlug(slug: string): NewsArticle | null {
@@ -41,6 +46,7 @@ export function getNewsBySlug(slug: string): NewsArticle | null {
     title: (data.title as string) ?? slug,
     date: (data.date as string) ?? "",
     summary: (data.summary as string) ?? "",
+    pinned: Boolean(data.pinned),
     html,
   };
 }
