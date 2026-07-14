@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getAllNews } from "@/lib/news";
 
 const TOOL_LINKS = [
   { href: "/tools/fire-crystal", title: "火晶精錬シミュレーター", desc: "FC6〜FC10の完了予定日を計算" },
@@ -7,6 +8,8 @@ const TOOL_LINKS = [
 ];
 
 export default function HomePage() {
+  const latestNews = getAllNews().slice(0, 3);
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <section className="mb-12">
@@ -44,7 +47,20 @@ export default function HomePage() {
 
       <section>
         <h2 className="mb-4 text-lg font-bold">最新ニュース</h2>
-        <Link href="/news" className="text-sm text-blue-600 hover:underline">
+        <div className="space-y-3">
+          {latestNews.length === 0 && <p className="text-sm text-gray-500">まだ記事がありません。</p>}
+          {latestNews.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/news/${item.slug}`}
+              className="block rounded-xl border border-gray-200 p-4 hover:border-blue-400 hover:shadow-sm"
+            >
+              <p className="text-xs text-gray-400">{item.date}</p>
+              <p className="mt-1 font-semibold">{item.title}</p>
+            </Link>
+          ))}
+        </div>
+        <Link href="/news" className="mt-4 inline-block text-sm text-blue-600 hover:underline">
           ニュース一覧を見る →
         </Link>
       </section>
