@@ -22,7 +22,7 @@ export function subscribe(listener: Listener): () => void {
 export function getSnapshot(): LockStatus {
   const hash = window.localStorage.getItem(HASH_KEY);
   if (!hash) return "setup";
-  return window.sessionStorage.getItem(UNLOCK_KEY) === "1" ? "unlocked" : "locked";
+  return window.localStorage.getItem(UNLOCK_KEY) === "1" ? "unlocked" : "locked";
 }
 
 export function getServerSnapshot(): LockStatus {
@@ -39,7 +39,7 @@ async function sha256(text: string): Promise<string> {
 
 export async function setupPasscode(passcode: string): Promise<void> {
   window.localStorage.setItem(HASH_KEY, await sha256(passcode));
-  window.sessionStorage.setItem(UNLOCK_KEY, "1");
+  window.localStorage.setItem(UNLOCK_KEY, "1");
   notify();
 }
 
@@ -47,13 +47,13 @@ export async function tryUnlock(passcode: string): Promise<boolean> {
   const hash = window.localStorage.getItem(HASH_KEY);
   const ok = (await sha256(passcode)) === hash;
   if (ok) {
-    window.sessionStorage.setItem(UNLOCK_KEY, "1");
+    window.localStorage.setItem(UNLOCK_KEY, "1");
     notify();
   }
   return ok;
 }
 
 export function lock(): void {
-  window.sessionStorage.removeItem(UNLOCK_KEY);
+  window.localStorage.removeItem(UNLOCK_KEY);
   notify();
 }
