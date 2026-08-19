@@ -6,6 +6,7 @@ import { lock } from "@/lib/todo/passcodeStore";
 
 const NAV_ITEMS = [
   { href: "/todo", label: "ホーム" },
+  { href: "/todo/recurring", label: "定期" },
   { href: "/todo/report", label: "レポート" },
 ];
 

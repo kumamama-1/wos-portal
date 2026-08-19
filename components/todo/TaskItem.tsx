@@ -97,7 +97,14 @@ export function TaskItem({ todo, today }: { todo: Todo; today: string }) {
         ✓
       </button>
       <div className="min-w-0 flex-1">
-        <p className={`text-sm ${todo.completed ? "text-slate-400 line-through" : "text-slate-900"}`}>{todo.title}</p>
+        <p className={`text-sm ${todo.completed ? "text-slate-400 line-through" : "text-slate-900"}`}>
+          {todo.recurringTaskId && (
+            <span aria-label="定期タスク" title="定期タスクから自動作成" className="mr-1">
+              🔁
+            </span>
+          )}
+          {todo.title}
+        </p>
         <div className="mt-1 flex flex-wrap items-center gap-1.5">
           {todo.dueDate && (
             <span
