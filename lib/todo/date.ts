@@ -32,9 +32,18 @@ export function formatDisplayDate(key: string): string {
   return `${dt.getMonth() + 1}/${dt.getDate()}`;
 }
 
+const WEEKDAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
+
 export function formatWeekday(key: string): string {
-  const dt = appDayToDate(key);
-  return ["日", "月", "火", "水", "木", "金", "土"][dt.getDay()];
+  return WEEKDAY_LABELS[appDayToDate(key).getDay()];
+}
+
+export function getWeekdayIndex(key: string): number {
+  return appDayToDate(key).getDay();
+}
+
+export function weekdayLabel(index: number): string {
+  return WEEKDAY_LABELS[index];
 }
 
 export function formatTime(iso: string): string {

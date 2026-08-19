@@ -3,7 +3,7 @@ import type { TodoState } from "./types";
 const STORAGE_KEY = "wos-todo:data:v1";
 
 export function createEmptyState(): TodoState {
-  return { todos: [], log: [], lastSuggestionAppDay: null };
+  return { todos: [], log: [], lastSuggestionAppDay: null, recurringTasks: [], skippedInstances: [] };
 }
 
 export function loadState(): TodoState {
@@ -16,6 +16,8 @@ export function loadState(): TodoState {
       todos: parsed.todos ?? [],
       log: parsed.log ?? [],
       lastSuggestionAppDay: parsed.lastSuggestionAppDay ?? null,
+      recurringTasks: parsed.recurringTasks ?? [],
+      skippedInstances: parsed.skippedInstances ?? [],
     };
   } catch {
     return createEmptyState();

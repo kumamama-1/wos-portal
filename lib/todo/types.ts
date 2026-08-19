@@ -10,6 +10,8 @@ export interface Todo {
   completed: boolean;
   createdAt: string;
   completedAt: string | null;
+  /** set when this todo was auto-generated from a RecurringTask template */
+  recurringTaskId: string | null;
 }
 
 export type ActivityType = "created" | "completed" | "reopened" | "deleted";
@@ -22,10 +24,32 @@ export interface ActivityLogEntry {
   at: string;
 }
 
+export type RecurrenceFrequency = "daily" | "weekly";
+
+export interface RecurringTask {
+  id: string;
+  title: string;
+  memo: string;
+  frequency: RecurrenceFrequency;
+  /** 0 (Sun) - 6 (Sat), required when frequency is "weekly", null when "daily" */
+  weekday: number | null;
+  priority: Priority;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface SkippedInstance {
+  recurringTaskId: string;
+  day: string;
+}
+
 export interface TodoState {
   todos: Todo[];
   log: ActivityLogEntry[];
   lastSuggestionAppDay: string | null;
+  recurringTasks: RecurringTask[];
+  /** (template, day) pairs whose generated instance was deleted, so it isn't recreated that day */
+  skippedInstances: SkippedInstance[];
 }
 
 export interface DailyStat {
