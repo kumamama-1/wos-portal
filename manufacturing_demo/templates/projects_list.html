@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}案件一覧 | 製造工程管理システム{% endblock %}
+{% block content %}
+<h1 class="page-title">案件一覧</h1>
+<a href="{{ url_for('project_new') }}" class="btn btn-primary btn-block">＋ 新規案件登録</a>
+
+<div class="project-cards">
+  {% for p in projects %}
+  <a class="project-card" href="{{ url_for('project_detail', project_id=p.id) }}">
+    <div class="project-card-head">
+      <span class="project-name">{{ p.project_name }}</span>
+      <span class="badge badge-stage-{{ p.current_stage }}">【{{ stages[p.current_stage - 1] }}】</span>
+    </div>
+    <div class="project-card-body">
+      <div>注文番号：{{ p.order_number }}</div>
+      <div>顧客名：{{ p.customer_name }}</div>
+      <div>納期：{{ p.delivery_date }}</div>
+      <div>状態：{{ "出荷完了" if p.current_stage == stages|length else "進行中" }}</div>
+    </div>
+  </a>
+  {% else %}
+  <p class="empty">まだ案件が登録されていません。</p>
+  {% endfor %}
+</div>
+{% endblock %}

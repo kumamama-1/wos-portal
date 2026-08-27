@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}通知一覧 | 製造工程管理システム{% endblock %}
+{% block content %}
+<h1 class="page-title">通知一覧</h1>
+<ul class="notification-list">
+  {% for n in notifications %}
+  <li>
+    <span class="notif-msg">{{ n.message }}</span>
+    <span class="notif-time">{{ n.created_at }}</span>
+  </li>
+  {% else %}
+  <li class="empty">通知はまだありません</li>
+  {% endfor %}
+</ul>
+{% endblock %}

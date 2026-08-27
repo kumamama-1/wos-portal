@@ -43,3 +43,9 @@ dev-server.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# manufacturing_demo (Python/Flask デモ)
+manufacturing_demo/__pycache__/
+manufacturing_demo/*.pyc
+manufacturing_demo/manufacturing.db
+manufacturing_demo/venv/

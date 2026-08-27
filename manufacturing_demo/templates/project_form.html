@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}新規案件登録 | 製造工程管理システム{% endblock %}
+{% block content %}
+<h1 class="page-title">新規案件登録</h1>
+<form method="post" class="form">
+  <label>案件名
+    <input type="text" name="project_name" placeholder="例：夏フェス限定シート" required>
+  </label>
+  <label>注文番号
+    <input type="text" name="order_number" placeholder="例：ORD-2001" required>
+  </label>
+  <label>顧客名
+    <input type="text" name="customer_name" placeholder="例：〇〇商事" required>
+  </label>
+  <label>数量
+    <input type="number" name="quantity" min="1" placeholder="例：100" required>
+  </label>
+  <label>納期
+    <input type="date" name="delivery_date" required>
+  </label>
+  <label>備考
+    <textarea name="notes" rows="3" placeholder="任意"></textarea>
+  </label>
+  <button type="submit" class="btn btn-primary btn-block">登録する</button>
+</form>
+{% endblock %}

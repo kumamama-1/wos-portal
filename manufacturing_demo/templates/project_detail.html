@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ project.project_name }} | 製造工程管理システム{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ project.project_name }}</h1>
+
+<div class="info-card">
+  <div><span class="info-label">注文番号</span>{{ project.order_number }}</div>
+  <div><span class="info-label">顧客名</span>{{ project.customer_name }}</div>
+  <div><span class="info-label">数量</span>{{ project.quantity }}</div>
+  <div><span class="info-label">納期</span>{{ project.delivery_date }}</div>
+  <div><span class="info-label">備考</span>{{ project.notes or "なし" }}</div>
+  <div><span class="info-label">登録日時</span>{{ project.created_at }}</div>
+  <div><span class="info-label">更新日時</span>{{ project.updated_at }}</div>
+  <div><span class="info-label">最終操作者</span>{{ project.last_updated_by or "なし" }}</div>
+</div>
+
+<h2 class="section-title">工程の進捗</h2>
+<ul class="progress-list">
+  {% for stage in stages %}
+  {% set n = loop.index %}
+  <li class="{{ 'done' if n < project.current_stage else ('current' if n == project.current_stage else 'pending') }}">
+    <span class="progress-mark">
+      {%- if n < project.current_stage -%}✓{%- elif n == project.current_stage -%}●{%- else -%}○{%- endif -%}
+    </span>
+    {{ stage }}
+  </li>
+  {% endfor %}
+</ul>
+
+{% if project.current_stage < stages|length %}
+<form method="post" action="{{ url_for('advance_stage', project_id=project.id) }}">
+  <button type="submit" class="btn btn-primary btn-block">次の工程へ進む（{{ stages[project.current_stage] }}へ）</button>
+</form>
+{% else %}
+<p class="done-message">✓ すべての工程が完了し、出荷済みです。</p>
+{% endif %}
+
+<h2 class="section-title">操作履歴</h2>
+<ul class="history-list">
+  {% for h in history %}
+  <li>
+    <span class="history-time">{{ h.created_at }}</span>
+    <span class="history-user">{{ h.user_name }}</span>
+    {{ h.action }}
+  </li>
+  {% else %}
+  <li class="empty">履歴はまだありません</li>
+  {% endfor %}
+</ul>
+{% endblock %}

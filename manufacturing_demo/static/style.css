@@ -1,0 +1,405 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", -apple-system, sans-serif;
+  background: #f2f4f7;
+  color: #1f2937;
+  font-size: 17px;
+  line-height: 1.5;
+  padding-bottom: 84px; /* 下部ナビとの重なり防止 */
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ヘッダー */
+.app-header {
+  background: #1d4ed8;
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.user-select-form select {
+  font-size: 15px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* ページタイトル */
+.page-title {
+  font-size: 22px;
+  margin: 8px 0 16px;
+}
+
+.section-title {
+  font-size: 18px;
+  margin: 24px 0 10px;
+  border-left: 6px solid #1d4ed8;
+  padding-left: 8px;
+}
+
+/* ボタン */
+.btn {
+  display: inline-block;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.btn-primary:active {
+  background: #1e40af;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #1f2937;
+  margin-top: 12px;
+}
+
+/* ダッシュボード：統計カード */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stat-total {
+  grid-column: span 2;
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.stat-num {
+  display: block;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.stat-label {
+  display: block;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* 工程別件数 */
+.stage-breakdown {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stage-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.stage-breakdown li:last-child {
+  border-bottom: none;
+}
+
+.stage-count {
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+/* 通知一覧 */
+.notification-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.notification-list li {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notification-list li.unread {
+  border-left: 5px solid #dc2626;
+}
+
+.notif-msg .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #dc2626;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.notif-time {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.empty {
+  color: #9ca3af;
+  text-align: center;
+  padding: 16px;
+}
+
+/* 案件一覧カード */
+.project-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.project-card {
+  display: block;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.project-name {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.badge {
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+.badge-stage-6 {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.project-card-body {
+  font-size: 14px;
+  color: #4b5563;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* フォーム */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  font-weight: bold;
+  gap: 6px;
+}
+
+.form input,
+.form textarea {
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-family: inherit;
+}
+
+/* 案件詳細 */
+.info-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+}
+
+.info-card > div {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-card > div:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  display: inline-block;
+  width: 92px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* 工程進捗 */
+.progress-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.progress-list li {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  color: #9ca3af;
+}
+
+.progress-list li:last-child {
+  border-bottom: none;
+}
+
+.progress-list li.done {
+  color: #15803d;
+}
+
+.progress-list li.current {
+  color: #1d4ed8;
+  font-weight: bold;
+  background: #eff6ff;
+}
+
+.progress-mark {
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+}
+
+.done-message {
+  text-align: center;
+  font-weight: bold;
+  color: #15803d;
+  padding: 14px;
+}
+
+/* 操作履歴 */
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.history-list li {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.history-time {
+  display: block;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.history-user {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+/* 下部ナビゲーション */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-around;
+  padding: 6px 0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.bottom-nav a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: #4b5563;
+  font-size: 12px;
+  padding: 6px 0;
+}
+
+.bottom-nav a.nav-highlight {
+  color: #1d4ed8;
+  font-weight: bold;
+}
+
+.nav-icon {
+  display: block;
+  font-size: 22px;
+}
+
+/* PC幅など広い画面でもそこそこ見られるように */
+@media (min-width: 600px) {
+  .container {
+    max-width: 480px;
+  }
+}
