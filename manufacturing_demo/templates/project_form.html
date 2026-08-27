@@ -2,7 +2,12 @@
 {% block title %}新規案件登録 | 製造工程管理システム{% endblock %}
 {% block content %}
 <h1 class="page-title">新規案件登録</h1>
-<form method="post" class="form">
+
+<button type="button" class="btn btn-secondary btn-block" onclick="fillSample()">
+  🖱️ サンプル内容をワンクリック入力
+</button>
+
+<form method="post" class="form" id="project-form">
   <label>案件名
     <input type="text" name="project_name" placeholder="例：夏フェス限定シート" required>
   </label>
@@ -23,4 +28,25 @@
   </label>
   <button type="submit" class="btn btn-primary btn-block">登録する</button>
 </form>
+
+<script>
+  // 発表時にキーボードを使わなくても登録デモができるよう、
+  // マウスクリックだけでサンプル内容を入力できるようにする。
+  function fillSample() {
+    const form = document.getElementById("project-form");
+    const today = new Date();
+    const delivery = new Date(today);
+    delivery.setDate(delivery.getDate() + 14);
+    const pad = (n) => String(n).padStart(2, "0");
+    const dateStr = `${delivery.getFullYear()}-${pad(delivery.getMonth() + 1)}-${pad(delivery.getDate())}`;
+    const stamp = `${pad(today.getHours())}${pad(today.getMinutes())}${pad(today.getSeconds())}`;
+
+    form.project_name.value = "デモ案件：新商品シート";
+    form.order_number.value = "ORD-" + stamp;
+    form.customer_name.value = "デモ商事株式会社";
+    form.quantity.value = 100;
+    form.delivery_date.value = dateStr;
+    form.notes.value = "発表用のサンプルデータです";
+  }
+</script>
 {% endblock %}

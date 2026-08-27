@@ -403,3 +403,30 @@ body {
     max-width: 480px;
   }
 }
+
+/* マウス操作のPCでは、クリックできる場所がひと目で分かるようにする */
+@media (hover: hover) and (pointer: fine) {
+  .btn,
+  .project-card,
+  .bottom-nav a,
+  .user-select-form select {
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: #1e40af;
+  }
+
+  .btn-secondary:hover {
+    background: #d1d5db;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 2px 8px rgba(29, 78, 216, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .bottom-nav a:hover {
+    color: #1d4ed8;
+  }
+}
