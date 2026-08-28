@@ -1,6 +1,6 @@
-# 製造工程管理システム（デモ機）
+# 製造工程管理システム
 
-大学発表用の、製造工程をスマホから管理できるシンプルなFlaskアプリです。
+社内の製造工程をスマホから管理できるシンプルなFlaskアプリです。
 
 ## 必要なもの
 
@@ -21,19 +21,25 @@ pip install -r requirements.txt
 python app.py
 ```
 
-初回起動時に `manufacturing.db`（SQLite）が自動作成され、デモ用の案件6件・通知・履歴が投入されます。
+初回起動時に `manufacturing.db`（SQLite）が自動作成され、商品マスタ500件・デモ案件6件・通知・履歴が投入されます。
 
 - PCから: http://127.0.0.1:5000
 - スマホから: PCと同じWi-Fiに接続したうえで `http://<PCのIPアドレス>:5000`
   - PCのIPアドレスは `ifconfig`（Mac/Linux）や `ipconfig`（Windows）で確認できます（例: 192.168.1.10）
 
-デモデータをやり直したい場合は `manufacturing.db` を削除して再起動してください。
+データをやり直したい場合は `manufacturing.db` を削除して再起動してください。
+**古いバージョンで作った `manufacturing.db` が残っていると、テーブル構成が古いままなのでエラーになります。必ず削除してから起動し直してください。**
+
+## 商品マスタについて
+
+`db.py` の `_seed_products` で `SKU-0001〜SKU-0500` / `製品0001〜製品0500` という仮の商品名を500件投入しています。
+実際の商品リストがある場合は、ここをCSV等からの読み込みに差し替えてください。
 
 ## ファイル構成
 
 - `app.py` … Flaskのルーティング（画面表示・登録・工程を進める処理）
-- `db.py` … SQLiteの初期化・デモデータ投入
-- `schema.sql` … テーブル定義（projects / notifications / history）
+- `db.py` … SQLiteの初期化・商品マスタ/デモデータ投入
+- `schema.sql` … テーブル定義（products / projects / notifications / history）
 - `templates/` … 画面のHTML（Jinja2テンプレート）
 - `static/style.css` … スマホ向けのスタイル
 

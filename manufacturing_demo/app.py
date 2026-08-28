@@ -1,7 +1,6 @@
-"""製造工程管理システム デモ機。
+"""製造工程管理システム。
 
-大学発表用のシンプルなFlaskアプリです。
-機能を増やすことよりも「動いて仕組みが伝わること」を優先しています。
+社内で製造案件の工程を管理するためのシンプルなFlaskアプリです。
 """
 from flask import Flask, g, redirect, render_template, request, session, url_for
 
@@ -80,10 +79,17 @@ def dashboard():
     )
 
 
+PROJECT_LIST_QUERY = """
+    SELECT p.*, pr.product_code, pr.product_name
+    FROM projects p
+    JOIN products pr ON pr.id = p.product_id
+"""
+
+
 @app.route("/projects")
 def project_list():
     conn = get_db()
-    projects = conn.execute("SELECT * FROM projects ORDER BY id DESC").fetchall()
+    projects = conn.execute(PROJECT_LIST_QUERY + " ORDER BY p.id DESC").fetchall()
     conn.close()
     return render_template("projects_list.html", projects=projects, stages=STAGES)
 
@@ -94,6 +100,9 @@ def project_new():
         project_name = request.form["project_name"].strip()
         order_number = request.form["order_number"].strip()
         customer_name = request.form["customer_name"].strip()
+        contact_person = request.form["contact_person"].strip()
+        phone_number = request.form["phone_number"].strip()
+        product_id = request.form["product_id"]
         quantity = request.form["quantity"].strip()
         delivery_date = request.form["delivery_date"].strip()
         notes = request.form.get("notes", "").strip()
@@ -105,11 +114,13 @@ def project_new():
         cur = conn.execute(
             """
             INSERT INTO projects
-                (project_name, order_number, customer_name, quantity, delivery_date, notes,
+                (project_name, order_number, customer_name, contact_person, phone_number,
+                 product_id, quantity, delivery_date, notes,
                  current_stage, created_at, updated_at, last_updated_by)
-            VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
             """,
-            (project_name, order_number, customer_name, quantity, delivery_date, notes, ts, ts, user),
+            (project_name, order_number, customer_name, contact_person, phone_number,
+             product_id, quantity, delivery_date, notes, ts, ts, user),
         )
         project_id = cur.lastrowid
 
@@ -125,13 +136,16 @@ def project_new():
         conn.close()
         return redirect(url_for("project_detail", project_id=project_id))
 
-    return render_template("project_form.html")
+    conn = get_db()
+    products = conn.execute("SELECT * FROM products ORDER BY product_code").fetchall()
+    conn.close()
+    return render_template("project_form.html", products=products)
 
 
 @app.route("/projects/<int:project_id>")
 def project_detail(project_id):
     conn = get_db()
-    project = conn.execute("SELECT * FROM projects WHERE id = ?", (project_id,)).fetchone()
+    project = conn.execute(PROJECT_LIST_QUERY + " WHERE p.id = ?", (project_id,)).fetchone()
     history = conn.execute(
         "SELECT * FROM history WHERE project_id = ? ORDER BY created_at DESC, id DESC",
         (project_id,),

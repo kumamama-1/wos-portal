@@ -225,14 +225,39 @@ body {
   font-weight: bold;
   padding: 4px 8px;
   border-radius: 8px;
-  background: #dbeafe;
-  color: #1d4ed8;
   white-space: nowrap;
 }
 
+/* 工程ごとに色を分け、一目で進み具合が分かるようにする */
+.badge-stage-1 {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge-stage-2 {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-stage-3 {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.badge-stage-4 {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.badge-stage-5 {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* 出荷（配送）済みは完了として暗い色にする */
 .badge-stage-6 {
-  background: #dcfce7;
-  color: #15803d;
+  background: #374151;
+  color: #fff;
 }
 
 .project-card-body {
@@ -259,12 +284,14 @@ body {
 }
 
 .form input,
+.form select,
 .form textarea {
   font-size: 16px;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   font-family: inherit;
+  background: #fff;
 }
 
 /* 案件詳細 */

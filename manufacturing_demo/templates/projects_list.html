@@ -12,8 +12,9 @@
       <span class="badge badge-stage-{{ p.current_stage }}">【{{ stages[p.current_stage - 1] }}】</span>
     </div>
     <div class="project-card-body">
+      <div>商品：{{ p.product_code }} - {{ p.product_name }}</div>
       <div>注文番号：{{ p.order_number }}</div>
-      <div>顧客名：{{ p.customer_name }}</div>
+      <div>顧客名：{{ p.customer_name }}（{{ p.contact_person }}）</div>
       <div>納期：{{ p.delivery_date }}</div>
       <div>状態：{{ "出荷完了" if p.current_stage == stages|length else "進行中" }}</div>
     </div>

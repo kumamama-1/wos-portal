@@ -4,8 +4,11 @@
 <h1 class="page-title">{{ project.project_name }}</h1>
 
 <div class="info-card">
+  <div><span class="info-label">商品</span>{{ project.product_code }} - {{ project.product_name }}</div>
   <div><span class="info-label">注文番号</span>{{ project.order_number }}</div>
   <div><span class="info-label">顧客名</span>{{ project.customer_name }}</div>
+  <div><span class="info-label">担当者名</span>{{ project.contact_person }}</div>
+  <div><span class="info-label">電話番号</span>{{ project.phone_number }}</div>
   <div><span class="info-label">数量</span>{{ project.quantity }}</div>
   <div><span class="info-label">納期</span>{{ project.delivery_date }}</div>
   <div><span class="info-label">備考</span>{{ project.notes or "なし" }}</div>
