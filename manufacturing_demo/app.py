@@ -2,7 +2,7 @@
 
 社内で製造案件の工程を管理するためのシンプルなFlaskアプリです。
 """
-from flask import Flask, g, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 
 from db import STAGES, USERS, get_db, init_db, now_str
 
@@ -43,36 +43,32 @@ def stage_counts(conn):
     return counts
 
 
+NOTIFICATION_QUERY = """
+    SELECT n.*, p.project_name
+    FROM notifications n
+    JOIN projects p ON p.id = n.project_id
+    ORDER BY n.created_at DESC, n.id DESC
+"""
+
+
+def fetch_notifications(conn, limit=None):
+    query = NOTIFICATION_QUERY
+    if limit:
+        query += f" LIMIT {int(limit)}"
+    return conn.execute(query).fetchall()
+
+
 @app.route("/")
 def dashboard():
     conn = get_db()
     total = conn.execute("SELECT COUNT(*) AS c FROM projects").fetchone()["c"]
     counts = stage_counts(conn)
-
-    # 「製造中」は 部品在庫確認・製造スケジュール・シート製造 の3工程をまとめて表示する
-    order_count = counts[1]
-    manufacturing_count = counts[2] + counts[3] + counts[4]
-    inspection_count = counts[5]
-    shipped_count = counts[6]
-
-    notifications = conn.execute(
-        """
-        SELECT n.*, p.project_name
-        FROM notifications n
-        JOIN projects p ON p.id = n.project_id
-        ORDER BY n.created_at DESC, n.id DESC
-        LIMIT 5
-        """
-    ).fetchall()
+    notifications = fetch_notifications(conn, limit=5)
     conn.close()
 
     return render_template(
         "dashboard.html",
         total=total,
-        order_count=order_count,
-        manufacturing_count=manufacturing_count,
-        inspection_count=inspection_count,
-        shipped_count=shipped_count,
         counts=counts,
         stages=STAGES,
         notifications=notifications,
@@ -88,10 +84,24 @@ PROJECT_LIST_QUERY = """
 
 @app.route("/projects")
 def project_list():
+    stage = request.args.get("stage", type=int)
+
     conn = get_db()
-    projects = conn.execute(PROJECT_LIST_QUERY + " ORDER BY p.id DESC").fetchall()
+    if stage and 1 <= stage <= len(STAGES):
+        projects = conn.execute(
+            PROJECT_LIST_QUERY + " WHERE p.current_stage = ? ORDER BY p.id DESC", (stage,)
+        ).fetchall()
+    else:
+        stage = None
+        projects = conn.execute(PROJECT_LIST_QUERY + " ORDER BY p.id DESC").fetchall()
     conn.close()
-    return render_template("projects_list.html", projects=projects, stages=STAGES)
+
+    return render_template(
+        "projects_list.html",
+        projects=projects,
+        stages=STAGES,
+        filter_stage=stage,
+    )
 
 
 @app.route("/projects/new", methods=["GET", "POST"])
@@ -186,14 +196,7 @@ def advance_stage(project_id):
 @app.route("/notifications")
 def notifications_page():
     conn = get_db()
-    notifications = conn.execute(
-        """
-        SELECT n.*, p.project_name
-        FROM notifications n
-        JOIN projects p ON p.id = n.project_id
-        ORDER BY n.created_at DESC, n.id DESC
-        """
-    ).fetchall()
+    notifications = fetch_notifications(conn)
     conn.execute("UPDATE notifications SET is_read = 1")
     conn.commit()
     conn.close()

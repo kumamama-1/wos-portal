@@ -3,35 +3,19 @@
 {% block content %}
 <h1 class="page-title">ダッシュボード</h1>
 
-<div class="stat-grid">
-  <div class="stat-card stat-total">
-    <span class="stat-num">{{ total }}</span>
-    <span class="stat-label">案件総数</span>
-  </div>
-  <div class="stat-card">
-    <span class="stat-num">{{ order_count }}</span>
-    <span class="stat-label">注文受付中</span>
-  </div>
-  <div class="stat-card">
-    <span class="stat-num">{{ manufacturing_count }}</span>
-    <span class="stat-label">製造中</span>
-  </div>
-  <div class="stat-card">
-    <span class="stat-num">{{ inspection_count }}</span>
-    <span class="stat-label">品質検査中</span>
-  </div>
-  <div class="stat-card">
-    <span class="stat-num">{{ shipped_count }}</span>
-    <span class="stat-label">出荷済み</span>
-  </div>
+<div class="stat-card stat-total stat-total-single">
+  <span class="stat-num">{{ total }}</span>
+  <span class="stat-label">案件総数</span>
 </div>
 
 <h2 class="section-title">工程別の案件数</h2>
 <ul class="stage-breakdown">
   {% for stage in stages %}
   <li>
-    <span class="stage-name">{{ loop.index }}. {{ stage }}</span>
-    <span class="stage-count">{{ counts[loop.index] }} 件</span>
+    <a href="{{ url_for('project_list', stage=loop.index) }}">
+      <span class="stage-name">{{ loop.index }}. {{ stage }}</span>
+      <span class="stage-count">{{ counts[loop.index] }} 件</span>
+    </a>
   </li>
   {% endfor %}
 </ul>
@@ -40,8 +24,10 @@
 <ul class="notification-list">
   {% for n in notifications %}
   <li class="{{ 'unread' if not n.is_read else '' }}">
-    <span class="notif-msg">{% if not n.is_read %}<span class="dot"></span>{% endif %}{{ n.message }}</span>
-    <span class="notif-time">{{ n.created_at }}</span>
+    <a class="notif-link" href="{{ url_for('project_detail', project_id=n.project_id) }}">
+      <span class="notif-msg">{% if not n.is_read %}<span class="dot"></span>{% endif %}{{ n.message }}</span>
+      <span class="notif-time">{{ n.created_at }}</span>
+    </a>
   </li>
   {% else %}
   <li class="empty">通知はまだありません</li>

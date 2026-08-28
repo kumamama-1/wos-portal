@@ -5,8 +5,10 @@
 <ul class="notification-list">
   {% for n in notifications %}
   <li>
-    <span class="notif-msg">{{ n.message }}</span>
-    <span class="notif-time">{{ n.created_at }}</span>
+    <a class="notif-link" href="{{ url_for('project_detail', project_id=n.project_id) }}">
+      <span class="notif-msg">{{ n.message }}</span>
+      <span class="notif-time">{{ n.created_at }}</span>
+    </a>
   </li>
   {% else %}
   <li class="empty">通知はまだありません</li>

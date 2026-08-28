@@ -4,6 +4,13 @@
 <h1 class="page-title">案件一覧</h1>
 <a href="{{ url_for('project_new') }}" class="btn btn-primary btn-block">＋ 新規案件登録</a>
 
+{% if filter_stage %}
+<div class="filter-banner">
+  <span>絞り込み中：{{ stages[filter_stage - 1] }}（{{ projects|length }}件）</span>
+  <a href="{{ url_for('project_list') }}">すべて表示</a>
+</div>
+{% endif %}
+
 <div class="project-cards">
   {% for p in projects %}
   <a class="project-card" href="{{ url_for('project_detail', project_id=p.id) }}">
@@ -16,11 +23,10 @@
       <div>注文番号：{{ p.order_number }}</div>
       <div>顧客名：{{ p.customer_name }}（{{ p.contact_person }}）</div>
       <div>納期：{{ p.delivery_date }}</div>
-      <div>状態：{{ "出荷完了" if p.current_stage == stages|length else "進行中" }}</div>
     </div>
   </a>
   {% else %}
-  <p class="empty">まだ案件が登録されていません。</p>
+  <p class="empty">該当する案件がありません。</p>
   {% endfor %}
 </div>
 {% endblock %}
